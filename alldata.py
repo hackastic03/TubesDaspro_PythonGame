@@ -8,3 +8,4 @@
 user = []
 bahan = []
 candi = []
+roleIn = ""

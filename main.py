@@ -5,7 +5,6 @@ import program as prog
 data.user = parse.fromCSV(open("user.csv", "r"))
 data.bahan = parse.fromCSV(open("bahan_bangunan.csv", "r"))
 data.candi = parse.fromCSV(open("candi.csv", "r"))
-print(data.user)
 
 while True:
     command = input(">>> ")
