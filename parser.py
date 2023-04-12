@@ -16,3 +16,4 @@ def fromCSV(file):
         text = ""
         baris.append(column)
     return baris
+
