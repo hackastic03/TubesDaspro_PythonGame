@@ -1,4 +1,6 @@
 import alldata as data
+
+
 # import parser as parse
 # users = parse.fromCSV(open("user.csv", "r"))
 
@@ -6,12 +8,28 @@ def app(arr, x):
     line = 0
     for i in arr:
         line += 1
-    arr2 = [0 for i in range(line+1)]
+    arr2 = [0 for i in range(line + 1)]
     for i in range(line):
         arr2[i] = arr[i]
     arr2[line] = x
     line += 1
     return arr2
+
+def superadmin():
+    print(data.user)
+    print("role:", data.roleIn)
+    print("elemuser:", data.elemUser)
+
+
+# def noneFind(arr):
+#     for i in arr:
+
+def findUsername(inp):
+    for i in range(data.elemUser[1]):
+        if inp == data.user[i][0]:
+            username = data.user[i][0]
+            return username
+
 
 def run(command):
     if command == "login":
@@ -22,14 +40,12 @@ def run(command):
         summonjin()
     elif command == "hapusjin":
         hapusjin()
+    elif command == "superadmin":
+        superadmin()
 
 
 def login():
-    # stateIn = False; stateUser = False; statePass = False
-    # userIn = ""
     stateIn = True
-    # username = input("Username: ")
-    # password = input("Password: ")
 
     if data.roleIn == "":
         while stateIn:
@@ -37,9 +53,8 @@ def login():
             password = input("Password: ")
             checkUser = False
 
-
             if not checkUser:
-                for i in range(len(data.elemUser)):
+                for i in range(data.elemUser[1]):
                     if username == data.user[i][0]:
                         data.roleIn = data.user[i][2]
                         checkUser = True
@@ -48,7 +63,7 @@ def login():
                     print("Username tidak ditemukan!")
 
             if checkUser:
-                for i in range(len(data.elemUser)):
+                for i in range(data.elemUser[1]):
                     if password == data.user[i][1] and data.roleIn == data.user[i][2]:
                         print(f"""Selamat datang, {data.user[i][0]}!
 Masukkan command \"help\" untuk daftar command yang dapat kamu panggil""")
@@ -63,39 +78,14 @@ Masukkan command \"help\" untuk daftar command yang dapat kamu panggil""")
 Anda telah login dengan username {data.userIn}, silahkan lakukan \"logout\" sebelum melakukan login kembali.""")
 
 
-
-#     for i in range(len(data.user)):
-#         if (username == data.user[i][0]) and (password == data.user[i][1]):
-#             stateIn = True; statePass = True; stateUser = True
-#             userIn = data.user[i][0]
-#             data.roleIn = data.user[i][2]
-#             print(f"""Selamat datang, {userIn}!
-# Masukkan command \"help\" untuk daftar command yang dapat kamu panggil""")
-#             break
-#         else:
-#             if username == data.user[i][0] and password != data.user[i][1]:
-#                 stateUser = True
-#             elif password == data.user[i][1] and username != data.user[i][0]:
-#                 statePass = True
-#             else:
-#                 statePass = True
-#
-#     if stateUser:
-#         print("Password salah")
-#     elif statePass:
-#         print("Username tidak terdaftar!")
-    # return userIn, stateIn, data.roleIn
-
-
 def logout():
-    if data.roleIn != "":
+    if data.roleIn == "":
         print("""Logout gagal!
 Anda belum login, silahkan login terlebih dahulu sebelum melakukan logout""")
-    # stateIn = False
-    # userIn = ""
     else:
         data.roleIn = ""
-    # return userIn, state, data.roleIn
+        print("Logout berhasil!")
+
 
 def summonjin():
     if data.roleIn == "bandung_bondowoso":
@@ -123,14 +113,18 @@ def summonjin():
                 for i in range(len(data.user)):
                     if daftarUserJin == data.user[i][0]:
                         print(f"Username \"{daftarUserJin}\" sudah diambil!")
+                        validasiUsernameJin = True
+                        break
                     else:
                         validasiUsernameJin = False
 
-            while True:
+            while not validasiUsernameJin:
                 daftarPassJin = input("Masukkan password jin: ")
-                if len(daftarPassJin) >= 5 or len(daftarPassJin) <= 25:
+                if len(daftarPassJin) >= 5 and len(daftarPassJin) <= 25:
                     data.user = app(data.user, [daftarUserJin, daftarPassJin, rolejin])
-                    print(len(daftarPassJin))
+                    data.elemUser = (data.elemUser[0], data.elemUser[1] + 1)
+                    print(data.elemUser[1])
+                    validasiUsernameJin = True
                     break
                 else:
                     print("Password panjangnya harus 5-25 karakter!")
@@ -139,14 +133,13 @@ def summonjin():
         print("Anda tidak punya akses!")
 
 
-    print(data.user)
 
 def hapusjin():
     if data.roleIn == "bandung_bondowoso":
         validasiUsernameJin = True
         while validasiUsernameJin:
             deleteJin = input("Masukkan username jin : ")
-            for i in range(len(data.elemUser)):
+            for i in range(data.elemUser[1]):
                 if deleteJin == data.user[i][0] and deleteJin != "Bondowoso" and deleteJin != "Roro":
                     validasiUsernameJin = False
                     checkDeleteJin = input(f"Apakah anda yakin ingin menghapus jin dengan username {deleteJin} (Y/N)? ")

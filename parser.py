@@ -6,7 +6,7 @@ def nElem(file):
                 nkolom += 1
         break
 
-    nbaris = 0
+    nbaris = 1
     for line in file:
         nbaris += 1
     return nkolom, nbaris
