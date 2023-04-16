@@ -1,9 +1,6 @@
 import alldata as data
 
 
-# import parser as parse
-# users = parse.fromCSV(open("user.csv", "r"))
-
 def app(arr, x):
     line = 0
     for i in arr:
