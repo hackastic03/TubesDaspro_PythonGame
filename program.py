@@ -7,7 +7,6 @@ def isNone(file):
         if i[0] == None and i[1] == None:
             return True
 
-
 def app(file, x):
     line = 0
     for i in file:
@@ -116,9 +115,10 @@ def summonjin():
             validasiUsernameJin = True
             while validasiUsernameJin:
                 daftarUserJin = input("Masukkan username jin: ")
-                for i in range(len(data.user)):
+                for i in range(1,data.elemUser[1]):
                     if daftarUserJin == data.user[i][0]:
                         print(f"Username \"{daftarUserJin}\" sudah diambil!")
+                        print("sekarang baris ke- " + str(i))
                         validasiUsernameJin = True
                         break
                     else:
@@ -127,10 +127,18 @@ def summonjin():
             while not validasiUsernameJin:
                 daftarPassJin = input("Masukkan password jin: ")
                 if len(daftarPassJin) >= 5 and len(daftarPassJin) <= 25:
-                    data.user = app(data.user, [daftarUserJin, daftarPassJin, rolejin])
-                    data.elemUser = (data.elemUser[0], data.elemUser[1] + 1)
-                    validasiUsernameJin = True
-                    break
+                    print(data.user)
+                    for j in range(1,data.elemUser[1]):
+                        if data.user[j][0]== "Kosong" and data.user[j][1]=="Kosong" and data.user[j][2]=="Kosong":
+                            data.user[j][0], data.user[j][1], data.user[j][2] = daftarUserJin, daftarPassJin, rolejin
+                            validasiUsernameJin = True
+                            break
+                    else :
+                        data.user = app(data.user, [daftarUserJin, daftarPassJin, rolejin])
+                        data.elemUser = (data.elemUser[0], data.elemUser[1]+1)
+                        validasiUsernameJin = True
+                        break
+
                 else:
                     print("Password panjangnya harus 5-25 karakter!")
 
@@ -138,19 +146,18 @@ def summonjin():
         print("Anda tidak punya akses!")
 
 
-
 def hapusjin():
     if data.roleIn == "bandung_bondowoso":
         validasiUsernameJin = True
         while validasiUsernameJin:
             deleteJin = input("Masukkan username jin : ")
-            for i in range(data.elemUser[1]):
+            for i in range(1,data.elemUser[1]):
                 if deleteJin == data.user[i][0] and deleteJin != "Bondowoso" and deleteJin != "Roro":
                     validasiUsernameJin = False
                     checkDeleteJin = input(f"Apakah anda yakin ingin menghapus jin dengan username {deleteJin} (Y/N)? ")
                     if checkDeleteJin == "Y":
                         print("Jin telah berhasil dihapus dari alam gaib.")
-                        data.user[i][0], data.user[i][1], data.user[i][2] = None, None, None
+                        data.user[i][0], data.user[i][1], data.user[i][2] = "Kosong","Kosong","Kosong"
                         break
                     elif checkDeleteJin == "N":
                         print("Jin tidak jadi dihapus")
