@@ -1,8 +1,8 @@
 def nElem(file):
     nkolom = 1
     for line in file:
-        for char in line:
-            if char == ";":
+        for char in range(len(line)):
+            if line[char] == ";":
                 nkolom += 1
         break
 
@@ -27,17 +27,31 @@ def fromCSV(file):
     for line in file:
         column = []
         text = ""
-        for char in line:
-            if char == ";":
+        for char in range(len(line)):
+            if line[char] == ";":
                 column = app(column, text)
                 text = ""
-            elif char == "\n":
+            elif line[char] == "\n":
                 break
             else:
-                text += char
+                text += line[char]
         column = app(column, text)
         baris = app(baris, column)
+    file.close()
     return baris
+
+
+def fromMatrix(matrix, length, file):
+    with open(file, "w") as filename:
+        for i in range(length[1]):
+            for j in range(length[0]):
+                filename.write(str(matrix[i][j]))
+                if j < len(matrix[i])-1:
+                    filename.write(";")
+            filename.write("\n")
+
+    filename.close()
+
 
 # def fromCSV(file):
 #     baris = []

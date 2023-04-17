@@ -1,13 +1,20 @@
 import alldata as data
+import parser as parse
+import os
+
+def isNone(file):
+    for i in file:
+        if i[0] == None and i[1] == None:
+            return True
 
 
-def app(arr, x):
+def app(file, x):
     line = 0
-    for i in arr:
+    for i in file:
         line += 1
     arr2 = [0 for i in range(line + 1)]
     for i in range(line):
-        arr2[i] = arr[i]
+        arr2[i] = file[i]
     arr2[line] = x
     line += 1
     return arr2
@@ -39,6 +46,8 @@ def run(command):
         hapusjin()
     elif command == "superadmin":
         superadmin()
+    elif command == "save":
+        save()
 
 
 def login():
@@ -51,7 +60,7 @@ def login():
             checkUser = False
 
             if not checkUser:
-                for i in range(data.elemUser[1]):
+                for i in range(1, data.elemUser[1]):
                     if username == data.user[i][0]:
                         data.roleIn = data.user[i][2]
                         checkUser = True
@@ -60,7 +69,7 @@ def login():
                     print("Username tidak ditemukan!")
 
             if checkUser:
-                for i in range(data.elemUser[1]):
+                for i in range(1, data.elemUser[1]):
                     if password == data.user[i][1] and data.roleIn == data.user[i][2]:
                         print(f"""Selamat datang, {data.user[i][0]}!
 Masukkan command \"help\" untuk daftar command yang dapat kamu panggil""")
@@ -120,7 +129,6 @@ def summonjin():
                 if len(daftarPassJin) >= 5 and len(daftarPassJin) <= 25:
                     data.user = app(data.user, [daftarUserJin, daftarPassJin, rolejin])
                     data.elemUser = (data.elemUser[0], data.elemUser[1] + 1)
-                    print(data.elemUser[1])
                     validasiUsernameJin = True
                     break
                 else:
@@ -153,3 +161,19 @@ def hapusjin():
             else:
                 print("Tidak ada jin dengan username tersebut.")
                 break
+
+def save():
+    savefolder = input("Masukkan nama folder: ")
+    if os.path.exists(savefolder):
+        print('Saving...')
+        parse.fromMatrix(data.user, data.elemUser, os.path.join(savefolder, "user.csv"))
+        parse.fromMatrix(data.bahan, data.elemBahan, os.path.join(savefolder, "bahan_bangunan.csv"))
+        parse.fromMatrix(data.candi, data.elemCandi, os.path.join(savefolder, "candi.csv"))
+        print(f"Berhasil menyimpan data di folder {savefolder}!")
+    else:
+        os.makedirs(savefolder)
+        print(f"Membuat folder {savefolder}...")
+        parse.fromMatrix(data.user, data.elemUser, os.path.join(savefolder, "user.csv"))
+        parse.fromMatrix(data.bahan, data.elemBahan, os.path.join(savefolder, "bahan_bangunan.csv"))
+        parse.fromMatrix(data.candi, data.elemCandi, os.path.join(savefolder, "candi.csv"))
+        print(f"Berhasil menyimpan data di folder {savefolder}!")
