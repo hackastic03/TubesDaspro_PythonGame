@@ -41,12 +41,14 @@ data.elemCandi = parse.nElem(open(filepath(args.folder, "candi.csv"), "r"))
 while True:
     command = input(">>> ")
     if command == "exit":
-        saveoper = input("Apakah Anda mau melakukan penyimpanan file yang diubah? (y/n) ")
-        if saveoper == "y" or saveoper == "Y":
-            prog.save()
-        elif saveoper == "N" or saveoper == "n":
-            break
-        else:
-            continue
+        exitTrue = True
+        while exitTrue:
+            saveoper = input("Apakah Anda mau melakukan penyimpanan file yang diubah? (y/n) ")
+            if saveoper == "y" or saveoper == "Y":
+                prog.save()
+            elif saveoper == "N" or saveoper == "n":
+                break
+            else:
+                exitTrue = True
     else:
         prog.run(command)
