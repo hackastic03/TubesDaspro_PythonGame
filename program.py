@@ -177,16 +177,4 @@ def save():
         parse.fromMatrix(data.bahan, data.elemBahan, os.path.join(savefolder, "bahan_bangunan.csv"))
         parse.fromMatrix(data.candi, data.elemCandi, os.path.join(savefolder, "candi.csv"))
         print(f"Berhasil menyimpan data di folder {savefolder}!")
-        
-def exit() :
-    print (">> exit")
-    pilihan = input ("Apakah Anda mau melakukan penyimpanan file yang sudah diubah? ")
-    if pilihan == "n" or pilihan == "N" :
-        run = False
-    elif pilihan == "y" or pilihan == "Y" :
-        save()
-        run = False
-    else :
-        while pilihan != "n" or pilihan != "N" or pilihan != "y" or pilihan != "Y" :
-            print ("Apakah Anda mau melakukan penyimpanan file yang sudah diubah?")
-
+    
