@@ -177,4 +177,3 @@ def save():
         parse.fromMatrix(data.bahan, data.elemBahan, os.path.join(savefolder, "bahan_bangunan.csv"))
         parse.fromMatrix(data.candi, data.elemCandi, os.path.join(savefolder, "candi.csv"))
         print(f"Berhasil menyimpan data di folder {savefolder}!")
-    
