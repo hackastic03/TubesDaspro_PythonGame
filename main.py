@@ -47,7 +47,7 @@ while True:
             if saveoper == "y" or saveoper == "Y":
                 prog.save()
             elif saveoper == "N" or saveoper == "n":
-                break
+                sys.exit()
             else:
                 exitTrue = True
     else:
