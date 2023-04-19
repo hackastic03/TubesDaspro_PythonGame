@@ -43,6 +43,8 @@ def run(command):
         summonjin()
     elif command == "hapusjin":
         hapusjin()
+    elif command == "ubahjin":
+        ubahjin()
     elif command == "superadmin":
         superadmin()
     elif command == "save":
@@ -145,6 +147,51 @@ def summonjin():
     else:
         print("Anda tidak punya akses!")
 
+def ubahjin() :
+    if data.roleIn == "bandung_bondowoso":
+        kondisi = True
+        daftarUserJin = input("Masukkan username jin: ")
+        for i in range(1,data.elemUser[1]):
+            if daftarUserJin == data.user[i][0]:
+                if data.user[i][2] == "Pembangun":
+                    while True:
+                        checkYesNo = input("Jin ini bertipe \"Pembangun\". Yakin ingin mengubah ke tipe \"Pengumpul\" (Y/N)? ")
+                        if checkYesNo == "Y" or checkYesNo == "y" :
+                            print("Jin berhasil diubah")
+                            data.user[i][2] = "Pengumpul"                
+                            break
+                        elif checkYesNo == "N" or checkYesNo == "n":
+                            print("Jin tidak jadi diubah")
+                            break
+                        else :
+                            print("Silahkan pilih Y atau N")
+                    break
+                if data.user[i][2] == "Pengumpul":
+                    while True :
+                        checkYesNo = input("Jin ini bertipe \"Pengumpul\". Yakin ingin mengubah ke tipe \"Pembangun\" (Y/N)?")
+                        if checkYesNo == "Y" or checkYesNo == "y" :
+                            print("Jin telah berhasil diubah")
+                            data.user[i][2] = "Pembangun"                
+                            break
+                        elif checkYesNo == "N" or checkYesNo == "n":
+                            print("Jin tidak jadi diubah")
+                            break
+                        else :
+                            print("Silahkan pilih Y atau N")
+                        break
+        for j in range(1,data.elemUser[1]):
+            if daftarUserJin == data.user[j][0]:
+                kondisi = True
+                break
+            else :
+                kondisi = False
+
+        while kondisi == False :
+            print("Tidak ada jin dengan username tersebut")
+            break
+        
+    else :
+        print("Anda tidak punya akses!")
 
 def hapusjin():
     if data.roleIn == "bandung_bondowoso":
