@@ -47,6 +47,10 @@ def run(command):
         summonjin()
     elif command == "hapusjin":
         hapusjin()
+    elif command == "laporanjin":
+        laporanjin()
+    elif command == "ubahjin":
+        ubahjin()
     elif command == "superadmin":
         superadmin()
     elif command == "save":
@@ -55,7 +59,7 @@ def run(command):
         help()
 
 
-#F01
+#F01 Login
 def login():
     stateIn = True
 
@@ -90,7 +94,7 @@ Masukkan command \"help\" untuk daftar command yang dapat kamu panggil""")
 Anda telah login dengan username {data.userIn}, silahkan lakukan \"logout\" sebelum melakukan login kembali.""")
 
 
-#F02
+#F02 Logout
 def logout():
     if data.roleIn == "":
         print("""Logout gagal!
@@ -100,7 +104,7 @@ Anda belum login, silahkan login terlebih dahulu sebelum melakukan logout""")
         print("Logout berhasil!")
 
 
-#F03
+#F03 Summon Jin
 def summonjin():
     if data.roleIn == "bandung_bondowoso":
         rolejin = ""
@@ -136,10 +140,16 @@ def summonjin():
             while not validasiUsernameJin:
                 daftarPassJin = input("Masukkan password jin: ")
                 if len(daftarPassJin) >= 5 and len(daftarPassJin) <= 25:
-                    data.user = app(data.user, [daftarUserJin, daftarPassJin, rolejin])
-                    data.elemUser = (data.elemUser[0], data.elemUser[1] + 1)
-                    validasiUsernameJin = True
-                    break
+                    for j in range(1,data.elemUser[1]):
+                        if data.user[j][0] == "-":
+                            data.user[j][0],data.user[j][1],data.user[j][2] = daftarUserJin,daftarPassJin,rolejin
+                            validasiUsernameJin = True
+                            break
+                    else :
+                        data.user = app(data.user, [daftarUserJin, daftarPassJin, rolejin])
+                        data.elemUser = (data.elemUser[0], data.elemUser[1] + 1)
+                        validasiUsernameJin = True
+                        break
                 else:
                     print("Password panjangnya harus 5-25 karakter!")
 
@@ -147,13 +157,13 @@ def summonjin():
         print("Anda tidak punya akses!")
 
 
-
+#F04 Hapus Jin
 def hapusjin():
     if data.roleIn == "bandung_bondowoso":
         validasiUsernameJin = True
         while validasiUsernameJin:
             deleteJin = input("Masukkan username jin : ")
-            for i in range(data.elemUser[1]):
+            for i in range(1,data.elemUser[1]):
                 if deleteJin == data.user[i][0] and deleteJin != "Bondowoso" and deleteJin != "Roro":
                     validasiUsernameJin = False
                     checkDeleteJin = input(f"Apakah anda yakin ingin menghapus jin dengan username {deleteJin} (Y/N)? ")
@@ -172,7 +182,7 @@ def hapusjin():
                 break
 
 
-#F05
+#F05 Ubah Jin
 def ubahjin():
     if data.roleIn == "bandung_bondowoso":
         kondisi = True
@@ -193,7 +203,7 @@ def ubahjin():
                         else:
                             print("Silahkan pilih Y atau N")
                     break
-                if data.user[i][2] == "Pengumpul":
+                elif data.user[i][2] == "Pengumpul":
                     while True:
                         checkYesNo = input(
                             "Jin ini bertipe \"Pengumpul\". Yakin ingin mengubah ke tipe \"Pembangun\" (Y/N)?")
@@ -233,8 +243,32 @@ def jumlahbahan():
         data.bahan = app(data.bahan, data.elemBahan[1], [data.userIn, "-", (pasir, batu, air)])[0]
         data.elemBahan = (data.elemBahan[0], data.elemBahan[1] + 1)
 
-#
+# F09 Ambil Laporan Jin
+def laporanjin():
+    if data.roleIn == "bandung_bondowoso":
+        pasir_counter = data.bahan[1][2]
+        batu_counter = data.bahan[2][2]
+        air_counter = data.bahan[3][2] 
 
+        jin_counter = data.elemUser[1]-1
+        jin_pembangun_counter = 0
+        jin_pengumpul_counter = 0
+
+        for i in range(1,data.elemUser[1]):
+            if data.user[i][2] == "Pembangun":
+                jin_pembangun_counter += 1
+            elif data.user[i][2] == "Pengumpul":
+                jin_pengumpul_counter +=1
+        
+        print("> Total jin : " + str(jin_counter))
+        print("> Total jin Pengumpul : " + str(jin_pengumpul_counter))
+        print("> Total jin Pembangun : " + str(jin_pembangun_counter))
+        print("> Jumlah Pasir : " + str(pasir_counter))
+        print("> Jumlah Air : " + str(air_counter))
+        print("> Jumlah Batu : " + str(batu_counter))
+
+    else:
+        print("Anda tidak punya akses!")
 
 # # F12 Ayam berkokok
 # def ayamberkokok() :
