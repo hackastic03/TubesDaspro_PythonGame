@@ -11,16 +11,16 @@ def nElem(file):
         nbaris += 1
     return nkolom, nbaris
 
-def app(arr, x):
+def app(file, x):
     line = 0
-    for i in arr:
+    for i in file:
         line += 1
-    arr2 = [0 for i in range(line+1)]
+    newfile = [0 for i in range(line+1)]
     for i in range(line):
-        arr2[i] = arr[i]
-    arr2[line] = x
+        newfile[i] = file[i]
+    newfile[line] = x
     line += 1
-    return arr2
+    return newfile
 
 def fromCSV(file):
     baris = []

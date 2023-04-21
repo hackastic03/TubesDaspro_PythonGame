@@ -5,6 +5,7 @@ import argparse
 import os
 import sys
 
+
 #F013 LOAD FUNCTION
 
 parser = argparse.ArgumentParser(description='Buka folder.')
@@ -41,8 +42,14 @@ data.elemCandi = parse.nElem(open(filepath(args.folder, "candi.csv"), "r"))
 while True:
     command = input(">>> ")
     if command == "exit":
-        break
-    # elif command == "save":
-    #     save()
+        exitTrue = True
+        while exitTrue:
+            saveoper = input("Apakah Anda mau melakukan penyimpanan file yang diubah? (y/n) ")
+            if saveoper == "y" or saveoper == "Y":
+                prog.save()
+            elif saveoper == "N" or saveoper == "n":
+                sys.exit()
+            else:
+                exitTrue = True
     else:
         prog.run(command)
