@@ -1,6 +1,8 @@
 import alldata as data
 import parser as parse
 import os
+from random import randint
+
 
 def isNone(file):
     for i in file:
@@ -8,22 +10,23 @@ def isNone(file):
             return True
 
 
-def app(file, x):
-    line = 0
-    for i in file:
-        line += 1
-    arr2 = [0 for i in range(line + 1)]
-    for i in range(line):
-        arr2[i] = file[i]
-    arr2[line] = x
-    line += 1
-    return arr2
+def app(arr, length, x):
+    # line = 0
+    # for i in arr:
+    #     line += 1
+    arr2 = [0 for i in range(length+1)]
+    for i in range(length):
+        arr2[i] = arr[i]
+    arr2[length] = x
+    length += 1
+    return arr2, length
 
 def superadmin():
     print(data.user)
     print("role:", data.roleIn)
     print("elemuser:", data.elemUser)
-
+    print(data.bahan)
+    print("elembahan:", data.elemBahan)
 
 # def noneFind(arr):
 #     for i in arr:
@@ -44,12 +47,19 @@ def run(command):
         summonjin()
     elif command == "hapusjin":
         hapusjin()
+    elif command == "ubahjin":
+        ubahjin()
+    elif command == "kumpul":
+        jumlahbahan()
     elif command == "superadmin":
         superadmin()
     elif command == "save":
         save()
+    elif command == "help":
+        help()
 
 
+#F01
 def login():
     stateIn = True
 
@@ -84,6 +94,7 @@ Masukkan command \"help\" untuk daftar command yang dapat kamu panggil""")
 Anda telah login dengan username {data.userIn}, silahkan lakukan \"logout\" sebelum melakukan login kembali.""")
 
 
+#F02
 def logout():
     if data.roleIn == "":
         print("""Logout gagal!
@@ -93,6 +104,7 @@ Anda belum login, silahkan login terlebih dahulu sebelum melakukan logout""")
         print("Logout berhasil!")
 
 
+#F03
 def summonjin():
     if data.roleIn == "bandung_bondowoso":
         rolejin = ""
@@ -116,7 +128,7 @@ def summonjin():
             validasiUsernameJin = True
             while validasiUsernameJin:
                 daftarUserJin = input("Masukkan username jin: ")
-                for i in range(len(data.user)):
+                for i in range(1,data.elemUser[1]):
                     if daftarUserJin == data.user[i][0]:
                         print(f"Username \"{daftarUserJin}\" sudah diambil!")
                         validasiUsernameJin = True
@@ -127,10 +139,18 @@ def summonjin():
             while not validasiUsernameJin:
                 daftarPassJin = input("Masukkan password jin: ")
                 if len(daftarPassJin) >= 5 and len(daftarPassJin) <= 25:
-                    data.user = app(data.user, [daftarUserJin, daftarPassJin, rolejin])
-                    data.elemUser = (data.elemUser[0], data.elemUser[1] + 1)
-                    validasiUsernameJin = True
-                    break
+                    for j in range(1, data.elemUser[1]):
+                        if data.user[j][0] == "-" and data.user[j][1] == "-" and data.user[j][2] == "-":
+                            data.user[j][0], data.user[j][1], data.user[j][2] = daftarUserJin, daftarPassJin, rolejin
+                            validasiUsernameJin = True
+                            print("Jin berhasil di-summon.")
+                            break
+                    else:
+                        data.user = app(data.user, data.elemUser[1], [daftarUserJin, daftarPassJin, rolejin])[0]
+                        data.elemUser = (data.elemUser[0], data.elemUser[1]+1)
+                        validasiUsernameJin = True
+                        break
+
                 else:
                     print("Password panjangnya harus 5-25 karakter!")
 
@@ -138,21 +158,21 @@ def summonjin():
         print("Anda tidak punya akses!")
 
 
-
+#F04
 def hapusjin():
     if data.roleIn == "bandung_bondowoso":
         validasiUsernameJin = True
         while validasiUsernameJin:
             deleteJin = input("Masukkan username jin : ")
-            for i in range(data.elemUser[1]):
+            for i in range(1, data.elemUser[1]):
                 if deleteJin == data.user[i][0] and deleteJin != "Bondowoso" and deleteJin != "Roro":
                     validasiUsernameJin = False
                     checkDeleteJin = input(f"Apakah anda yakin ingin menghapus jin dengan username {deleteJin} (Y/N)? ")
-                    if checkDeleteJin == "Y":
+                    if checkDeleteJin == "Y" or checkDeleteJin == "y":
                         print("Jin telah berhasil dihapus dari alam gaib.")
-                        data.user[i][0], data.user[i][1], data.user[i][2] = None, None, None
+                        data.user[i][0], data.user[i][1], data.user[i][2] = "-", "-", "-"
                         break
-                    elif checkDeleteJin == "N":
+                    elif checkDeleteJin == "N" or checkDeleteJin == "n":
                         print("Jin tidak jadi dihapus")
                         break
                 elif deleteJin == "Bondowoso" or deleteJin == "Roro":
@@ -161,29 +181,86 @@ def hapusjin():
             else:
                 print("Tidak ada jin dengan username tersebut.")
                 break
+
+
+#F05
+def ubahjin():
+    if data.roleIn == "bandung_bondowoso":
+        kondisi = True
+        daftarUserJin = input("Masukkan username jin: ")
+        for i in range(1, data.elemUser[1]):
+            if daftarUserJin == data.user[i][0]:
+                if data.user[i][2] == "Pembangun":
+                    while True:
+                        checkYesNo = input(
+                            "Jin ini bertipe \"Pembangun\". Yakin ingin mengubah ke tipe \"Pengumpul\" (Y/N)? ")
+                        if checkYesNo == "Y" or checkYesNo == "y":
+                            print("Jin berhasil diubah")
+                            data.user[i][2] = "Pengumpul"
+                            break
+                        elif checkYesNo == "N" or checkYesNo == "n":
+                            print("Jin tidak jadi diubah")
+                            break
+                        else:
+                            print("Silahkan pilih Y atau N")
+                    break
+                if data.user[i][2] == "Pengumpul":
+                    while True:
+                        checkYesNo = input(
+                            "Jin ini bertipe \"Pengumpul\". Yakin ingin mengubah ke tipe \"Pembangun\" (Y/N)?")
+                        if checkYesNo == "Y" or checkYesNo == "y":
+                            print("Jin telah berhasil diubah")
+                            data.user[i][2] = "Pembangun"
+                            break
+                        elif checkYesNo == "N" or checkYesNo == "n":
+                            print("Jin tidak jadi diubah")
+                            break
+                        else:
+                            print("Silahkan pilih Y atau N")
+                        break
+        for j in range(1, data.elemUser[1]):
+            if daftarUserJin == data.user[j][0]:
+                kondisi = True
+                break
+            else:
+                kondisi = False
+
+        while kondisi == False:
+            print("Tidak ada jin dengan username tersebut")
+            break
+
+    else:
+        print("Anda tidak punya akses!")
+
+
 # F07 Jin pengumpul
-from random import randint
-def jumlahbahan () :
-    pasir = randint(0,5) 
-    batu = randint(0,5)
-    air = randint(0,5)
-    jumlahterkumpul = (f'Jin menemukan {pasir} pasir. {batu} batu, {air}')
-    return jumlahterkumpul
-print (jumlahbahan())
 
-# F12 Ayam berkokok
-def ayamberkokok() :
-    print ('Kukuruyuk.. Kukuruyuk..')
-    if jumlahcandi == 100 :
-        print (f'Jumlah Candi: {jumlahcandi}')
-        print ('Yah, Bandung Bondowoso memenangkan permainan!')
-    else :
-        print (f'Jumlah Candi : {jumlahcandi}')
-        print ('''Selamat, Roro Jonggrang memenangkan permainan!.
+def jumlahbahan():
+    if data.userIn != "Bondowoso" or data.userIn != "Roro":
+        pasir = randint(0,5)
+        batu = randint(0,5)
+        air = randint(0,5)
+        jumlahterkumpul = (f'Jin menemukan {pasir} pasir. {batu} batu, {air}')
+        data.bahan = app(data.bahan, data.elemBahan[1], [data.userIn, "-", (pasir, batu, air)])[0]
+        data.elemBahan = (data.elemBahan[0], data.elemBahan[1] + 1)
 
-Bandung Bondowoso angry noise.
-Roro Jonggrang dikutuk menjadi candi.''')       
-(ayamberkokok())
+#
+
+
+# # F12 Ayam berkokok
+# def ayamberkokok() :
+#     print ('Kukuruyuk.. Kukuruyuk..')
+#     if jumlahcandi == 100 :
+#         print (f'Jumlah Candi: {jumlahcandi}')
+#         print ('Yah, Bandung Bondowoso memenangkan permainan!')
+#     else :
+#         print (f'Jumlah Candi : {jumlahcandi}')
+#         print ('''Selamat, Roro Jonggrang memenangkan permainan!.
+#
+# Bandung Bondowoso angry noise.
+# Roro Jonggrang dikutuk menjadi candi.''')
+# (ayamberkokok())
+
 
 def save():
     savefolder = input("Masukkan nama folder: ")
@@ -201,9 +278,11 @@ def save():
         parse.fromMatrix(data.candi, data.elemCandi, os.path.join(savefolder, "candi.csv"))
         print(f"Berhasil menyimpan data di folder {savefolder}!")
 
+
+
 # F15 HELP
 def help() :
-    if  data.roleIn == 'bandung_bondowoso' :
+    if data.roleIn == 'bandung_bondowoso' :
         print ('=========== HELP ===========')
         print (''' 1. logout
     Untuk keluar dari akun yang digunakan sekarang''')
@@ -229,13 +308,14 @@ def help() :
         print (''' 3. Ayam Berkokok
     Untuk menyelesaikan permainan dengan memalsukan pagi hari''')
         print
-    elif data.roleIn == 'jin_pembangun' :
+
+    elif data.roleIn == 'Pembangun':
         print ('=========== HELP ===========')
         print (''' 1. logout
     Untuk keluar dari akun yang digunakan sekarang''')
         print (''' 2. Jin Pembangun
     Untuk membangun candi dengan jumlah bahan yang tersedia jika jumlahnya mencukupi''')
-    elif data.roleIn == 'jin_pengumpul' :
+    elif data.roleIn == 'Pengumpul':
         print ('=========== HELP ===========')
         print (''' 1. logout
     Untuk keluar dari akun yang digunakan sekarang''')
@@ -247,7 +327,9 @@ def help() :
    Untuk masuk menggunakan akun''')
         print ('''2. exit
    Untuk keluar dari program dan kembali ke terminal''')
-(help())
+
+
+
 
 #F16 EXIT
 def exit () :
