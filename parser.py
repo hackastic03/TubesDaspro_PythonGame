@@ -41,6 +41,22 @@ def fromCSV(file):
     return baris
 
 
+def toTuple(line):
+    tuple = ()
+    element = ""
+    for char in range(len(line)):
+        if char == ",":
+            tuple = app(tuple, element)
+            element = ""
+        elif char == ")":
+            break
+        elif char == "(":
+            continue
+        else:
+            element += str(line(char))
+        tuple = app(tuple, element)
+    return tuple
+
 def fromMatrix(matrix, length, file):
     with open(file, "w") as filename:
         for i in range(length[1]):
@@ -53,23 +69,6 @@ def fromMatrix(matrix, length, file):
     filename.close()
 
 
-# def fromCSV(file):
-#     baris = []
-#     # test = False
-#     for line in file:
-#         column = []
-#         text = ""
-#         for char in line:
-#             if char == ";":
-#                 column.append(text)
-#                 text = ""
-#             elif char == "\n":
-#                 break
-#             else:
-#                 text += char
-#         column.append(text)
-#         baris.append(column)
-#     return baris
 
 
 

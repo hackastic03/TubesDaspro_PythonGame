@@ -47,6 +47,7 @@ while True:
             saveoper = input("Apakah Anda mau melakukan penyimpanan file yang diubah? (y/n) ")
             if saveoper == "y" or saveoper == "Y":
                 prog.save()
+                sys.exit()
             elif saveoper == "N" or saveoper == "n":
                 sys.exit()
             else:

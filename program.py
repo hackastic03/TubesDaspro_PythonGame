@@ -10,6 +10,23 @@ def isNone(file):
             return True
 
 
+def toTuple(line):
+    tuple_values = ()
+    num_str = ""
+    for char in range(len(line)):
+        if line[char] == "," or line[char] == ")" or line[char] == " ":
+            if num_str:
+                tuple_values += (int(num_str),)
+                num_str = ""
+        elif line[char] == "(":
+            continue
+        else:
+            num_str += line[char]
+    if num_str:
+        tuple_values += (int(num_str),)
+    return tuple_values
+
+
 def app(arr, length, x):
     # line = 0
     # for i in arr:
@@ -235,14 +252,21 @@ def ubahjin():
 
 # F07 Jin pengumpul
 
+
 def jumlahbahan():
     if data.userIn != "Bondowoso" or data.userIn != "Roro":
         pasir = randint(0,5)
         batu = randint(0,5)
         air = randint(0,5)
-        jumlahterkumpul = (f'Jin menemukan {pasir} pasir. {batu} batu, {air}')
-        data.bahan = app(data.bahan, data.elemBahan[1], [data.userIn, "-", (pasir, batu, air)])[0]
-        data.elemBahan = (data.elemBahan[0], data.elemBahan[1] + 1)
+        for i in range(data.elemBahan[1]):
+            if data.userIn == data.bahan[i][0]:
+                bahanAda = toTuple(data.bahan[i][2])
+                data.bahan[i][2] = (bahanAda[0] + pasir, bahanAda[1] + batu, bahanAda[2] + air)
+                break
+        else:
+            data.bahan = app(data.bahan, data.elemBahan[1], [data.userIn, "-", [pasir, batu, air]])[0]
+            data.elemBahan = (data.elemBahan[0], data.elemBahan[1] + 1)
+        print(f'Jin menemukan {pasir} pasir, {batu} batu, {air} air.')
 
 #
 
@@ -307,7 +331,6 @@ def help() :
     Untuk menghancurkan candi agar menggagalkan rencana Bandung Bondowoso dan data candi terhapus''')
         print (''' 3. Ayam Berkokok
     Untuk menyelesaikan permainan dengan memalsukan pagi hari''')
-        print
 
     elif data.roleIn == 'Pembangun':
         print ('=========== HELP ===========')
@@ -332,16 +355,16 @@ def help() :
 
 
 #F16 EXIT
-def exit () :
-    pilihan = ("Apakah Anda mau melakukan penyimpanan file yang sudah diubah? ")
-    if pilihan == "n" or pilihan == "N" :
-        run = False
-    elif pilihan == "Y" or pilihan == "y" :
-        save()
-        run = False
-    else :
-        while pilihan != "n" or pilihan != "N" or pilihan != "y" or pilihan != "Y" :
-            input ("Apakah Anda mau melakukan penyimpanan file yang sudah diubah? ")
+# def exit () :
+#     pilihan = ("Apakah Anda mau melakukan penyimpanan file yang sudah diubah? ")
+#     if pilihan == "n" or pilihan == "N" :
+#         run = False
+#     elif pilihan == "Y" or pilihan == "y" :
+#         save()
+#         run = False
+#     else :
+#         while pilihan != "n" or pilihan != "N" or pilihan != "y" or pilihan != "Y" :
+#             input ("Apakah Anda mau melakukan penyimpanan file yang sudah diubah? ")
 
 
 
