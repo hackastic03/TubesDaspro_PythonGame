@@ -4,10 +4,96 @@ import os
 from random import randint
 
 
+def pasir_counter(lst):
+    count = 0
+    for i in range(1,data.elemBahan[1]):
+        databahan = toTuple(data.bahan[i][2])
+        count += databahan[0]
+    return count
+
+def batu_counter (lst):
+    count = 0
+    for i in range(1,data.elemBahan[1]):
+        databahan = toTuple(data.bahan[i][2])
+        count += databahan[1]
+    return count
+
+def air_counter (lst):
+    count = 0
+    for i in range(1,data.elemBahan[1]):
+        databahan = toTuple(data.bahan[i][2])
+        count += databahan[2]
+    return count
+
+
+def modus_max(lst):
+    count2 = 2
+    for i in range(1,(data.elemCandi[1])):
+        count = 1
+        for j in range(i+1,data.elemCandi[1]):
+            if lst[i][1] == lst[j][1]:
+                count+=1
+            else :
+                count+=0
+        if count>=count2 :
+            modus = lst[i][1]
+            data.lstMax = app(data.lstMax,modus)
+            count2 = count
+    
+    indeks = len(data.lstMax)
+    return data.lstMax[indeks-1]
+
+
+def modus_min(lst):
+    count2 = 2
+    for i in range(1,(data.elemCandi[1])):
+        count = 1
+        for j in range(i+1,data.elemCandi[1]):
+            if lst[i][1] == lst[j][1]:
+                count+=1
+            else :
+                count+=0
+        if count>=count2 :
+            modus = lst[i][1]
+            data.lstMax = app(data.lstMax,modus)
+            count2 = count
+
+    for k in range(1,data.elemCandi[1]):
+        count = 0
+        for l in range(data.elemlstMax[1]+1):
+            if lst[k][1] == data.lstMax[l]:
+                count+=1
+            else :
+                count+=0
+        if count == 0 :
+            data.lstMin = app(data.lstMin,lst[k][1])
+    
+    indeks = len(data.lstMin)
+    return data.lstMin[indeks-1]
+
+
 def isNone(file):
     for i in file:
         if i[0] == None and i[1] == None:
             return True
+
+
+def toTuple(line):
+    tuple_values = ()
+    num_str = ""
+    for char in range(len(line)):
+        if line[char] == "," or line[char] == ")" or line[char] == " ":
+            if num_str:
+                tuple_values += (int(num_str),)
+                num_str = ""
+        elif line[char] == "(":
+            continue
+        else:
+            num_str += line[char]
+    if num_str:
+        tuple_values += (int(num_str),)
+    return tuple_values
+
 
 
 def app(file, x):
@@ -55,6 +141,8 @@ def run(command):
         superadmin()
     elif command == "save":
         save()
+    elif command == "jumlahbahan":
+        jumlahbahan()
     elif command == "help":
         help()
 
@@ -235,24 +323,36 @@ def ubahjin():
 # F07 Jin pengumpul
 
 def jumlahbahan():
-    if data.userIn != "Bondowoso" or data.userIn != "Roro":
+     if data.userIn != "Bondowoso" or data.userIn != "Roro":
         pasir = randint(0,5)
         batu = randint(0,5)
         air = randint(0,5)
-        jumlahterkumpul = (f'Jin menemukan {pasir} pasir. {batu} batu, {air}')
-        data.bahan = app(data.bahan, data.elemBahan[1], [data.userIn, "-", (pasir, batu, air)])[0]
-        data.elemBahan = (data.elemBahan[0], data.elemBahan[1] + 1)
+        for i in range(data.elemBahan[1]):
+            if data.userIn == data.bahan[i][0]:
+                bahanAda = toTuple(data.bahan[i][2])
+                data.bahan[i][2] = (bahanAda[0] + pasir, bahanAda[1] + batu, bahanAda[2] + air)
+                break
+        else:
+            data.bahan = app(data.bahan, data.elemBahan[1], [data.userIn, "-", [pasir, batu, air]])[0]
+            data.elemBahan = (data.elemBahan[0], data.elemBahan[1] + 1)
+        print(f'Jin menemukan {pasir} pasir, {batu} batu, {air} air.')
 
 # F09 Ambil Laporan Jin
 def laporanjin():
     if data.roleIn == "bandung_bondowoso":
-        pasir_counter = data.bahan[1][2]
-        batu_counter = data.bahan[2][2]
-        air_counter = data.bahan[3][2] 
+        pasir_count = pasir_counter(data.bahan)
+        batu_count = batu_counter(data.bahan)
+        air_count = air_counter(data.bahan)
 
-        jin_counter = data.elemUser[1]-1
-        jin_pembangun_counter = 0
+        jin_counter = 0
         jin_pengumpul_counter = 0
+        jin_pembangun_counter = 0
+
+        for j in range(3,data.elemUser[1]):
+            if data.user[j][0] == "-":
+                jin_counter +=0
+            else :
+                jin_counter +=1
 
         for i in range(1,data.elemUser[1]):
             if data.user[i][2] == "Pembangun":
@@ -263,9 +363,11 @@ def laporanjin():
         print("> Total jin : " + str(jin_counter))
         print("> Total jin Pengumpul : " + str(jin_pengumpul_counter))
         print("> Total jin Pembangun : " + str(jin_pembangun_counter))
-        print("> Jumlah Pasir : " + str(pasir_counter))
-        print("> Jumlah Air : " + str(air_counter))
-        print("> Jumlah Batu : " + str(batu_counter))
+        print("> Jumlah Pasir : " + str(pasir_count))
+        print("> Jumlah Air : " + str(air_count))
+        print("> Jumlah Batu : " + str(batu_count))
+        print("> Jin terajin adalah " + str(modus_max(data.candi)))
+        print("> Jin termalas adalah " + str(modus_min(data.candi)))
 
     else:
         print("Anda tidak punya akses!")

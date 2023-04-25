@@ -37,7 +37,8 @@ data.candi = parse.fromCSV(open(filepath(args.folder, "candi.csv"), "r"))
 data.elemUser = parse.nElem(open(filepath(args.folder, "user.csv"), "r"))
 data.elemBahan = parse.nElem(open(filepath(args.folder, "bahan_bangunan.csv"), "r"))
 data.elemCandi = parse.nElem(open(filepath(args.folder, "candi.csv"), "r"))
-
+data.elemlstMax = parse.nElem(data.lstMax)
+data.elemlstMin = parse.nElem(data.lstMin)
 
 while True:
     command = input(">>> ")
@@ -47,6 +48,7 @@ while True:
             saveoper = input("Apakah Anda mau melakukan penyimpanan file yang diubah? (y/n) ")
             if saveoper == "y" or saveoper == "Y":
                 prog.save()
+                sys.exit()
             elif saveoper == "N" or saveoper == "n":
                 sys.exit()
             else:
