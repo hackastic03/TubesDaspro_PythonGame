@@ -9,7 +9,7 @@ import sys
 #F013 LOAD FUNCTION
 
 parser = argparse.ArgumentParser(description='Buka folder.')
-parser.add_argument('folder', nargs='?', default=None, help='Spesifikasikan folder csv berlokasi')
+parser.add_argument('folder', nargs='?', default=None, help='Spesifikasikan folder csv berlokasi!')
 args = parser.parse_args()
 
 if args.folder is None:

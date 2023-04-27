@@ -2,6 +2,7 @@ import alldata as data
 import parser as parse
 import os
 from random import randint
+import sys
 
 
 def toArray(line):
@@ -61,9 +62,17 @@ def run(command):
     elif command == "ubahjin":
         ubahjin()
     elif command == "kumpul":
-        jumlahbahan()
+        jumlahbahan(False)
     elif command == "bangun":
-        banguncandi()
+        banguncandi(False)
+    elif command == "batchkumpul":
+        batchkumpul()
+    elif command == "batchbangun":
+        batchbangun()
+    elif command == "hancurkancandi":
+        hancurkancandi()
+    elif command == "ayamberkokok":
+        ayamberkokok()
     elif command == "superadmin":
         superadmin()
     elif command == "save":
@@ -74,24 +83,11 @@ def run(command):
 
 #F01
 def login():
-
     stateIn = True
-
     if data.userIn == "":
         while stateIn:
             username = input("Username: ")
             password = input("Password: ")
-
-#             for i in range(data.elemUser[1]):
-#                 if username == data.user[i][0] and password == data.user[i][1]:
-#                     print(f"""Selamat datang, {data.user[i][0]}!
-# Masukkan command \"help\" untuk daftar command yang dapat kamu panggil""")
-#                     data.userIn = data.user[i][0]
-#                     data.roleIn = data.user[i][1]
-#                     break
-#
-#                 elif username != data.user
-
             checkUser = False
 
             if not checkUser:
@@ -116,7 +112,7 @@ Masukkan command \"help\" untuk daftar command yang dapat kamu panggil""")
                 if stateIn:
                     print("Password salah!")
                     data.userIn = ""
-#
+
     else:
         print(f"""Login gagal!
 Anda telah login dengan username {data.userIn}, silahkan lakukan \"logout\" sebelum melakukan login kembali.""")
@@ -158,6 +154,8 @@ def summonjin():
             validasiUsernameJin = True
             while validasiUsernameJin:
                 daftarUserJin = input("Masukkan username jin: ")
+                if daftarUserJin == "-":
+                    print("Tidak bisa menggunakan karakter ini sebagai username!")
                 for i in range(1, data.elemUser[1]):
                     if daftarUserJin == data.user[i][0]:
                         print(f"Username \"{daftarUserJin}\" sudah diambil!")
@@ -220,7 +218,7 @@ def hapusjin():
                 break
 
 
-#F05
+#F05 Ubah Jin
 def ubahjin():
     kondisi = True
     daftarUserJin = input("Masukkan username jin: ")
@@ -267,9 +265,7 @@ def ubahjin():
 
 
 # F07 Jin pengumpul
-
-
-def jumlahbahan():
+def jumlahbahan(batch):
     if data.roleIn == "Pengumpul":
         pasir = randint(0, 5)
         batu = randint(0, 5)
@@ -282,12 +278,16 @@ def jumlahbahan():
         else:
             data.bahan = app(data.bahan, data.elemBahan[1], [data.userIn, "-", str([pasir, batu, air])])[0]
             data.elemBahan = (data.elemBahan[0], data.elemBahan[1] + 1)
-        print(f'Jin menemukan {pasir} pasir, {batu} batu, {air} air.')
+        if not batch:
+            print(f'Jin menemukan {pasir} pasir, {batu} batu, {air} air.')
+        else:
+            data.totalBahan = [data.totalBahan[0] + pasir, data.totalBahan[1] + batu, data.totalBahan[2] + air]
     else:
         print("Anda tidak punya akses!")
 
 
-def banguncandi():
+#F07
+def banguncandi(batch):
     if data.roleIn == "Pembangun":
         found = False
         material_required = [randint(0, 5), randint(0, 5), randint(0, 5)] #pasir, batu, air
@@ -342,42 +342,78 @@ def banguncandi():
     Candi tidak bisa dibangun!""")
 
 
+#F08
+def batchkumpul():
+    if data.userIn == "Bondowoso":
+        s = 0
+        for i in range(1, data.elemUser[1]):
+            if data.user[i][2] == "Pengumpul":
+                s += 1
+                data.roleIn = data.user[i][2]
+                data.userIn = data.user[i][0]
+                jumlahbahan(True)
+        data.roleIn = "bandung_bondowoso"
+        data.userIn = "Bondowoso"
+        print(f"Mengerahkan {s} jin untuk mengumpulkan bahan.")
+        print(f"Jin menemukan total {data.totalBahan[0]} pasir, {data.totalBahan[1]} batu, dan {data.totalBahan[2]} air.")
+
+def batchbangun():
+    if data.userIn == "Bondowoso":
+        s = 0
+        for i in range(1, data.elemUser[1]):
+            if data.user[i][2] == "Pengumpul":
+                s += 1
+                data.roleIn = data.user[i][2]
+                data.userIn = data.user[i][0]
+                banguncandi(True)
+        data.roleIn = "bandung_bondowoso";
+        data.userIn = "Bondowoso"
+        print(s)
 
 
+#Cari banyak jumlah candi
+def sumcandi():
+    for i in range(data.elemCandi[1]):
+        s = 0
+        if data.candi[i][1] != "-" and data.candi[i][1] != "":
+            s += 1
+        return s
 
-                # num_buildings = 0
-                # while True:
-                #     for i in range(3):
-                #         if materials_available[i] < materials_needed[i]:
-                #             break
-                #     else:
-                #         for i in range(3):
-                #             materials_available[i] -= materials_needed[i]
-                #         num_buildings += 1
-                #     break
-                #
-                # print("We can build", num_buildings, "buildings.")
-
-                # Count how many materials are left
-                # materials_left = materials_available
-            #     print("Materials left:", materials_left)
-            # else:
-            #     print("We don't have enough materials to build a single building.")
-
+#F11
+def hancurkancandi():
+    if data.roleIn == "roro_jonggrang":
+        id = int(input("Masukkan id candi: "))
+        for i in range(data.elemCandi[1]):
+            if id == data.candi[i][0]:
+                loop = True
+                while loop:
+                    val = input(f"Apakah anda yakin ingin menghancurkan candi ID: {id} (Y/N)? ")
+                    if val == "Y" or val == "y":
+                        data.candi[i] = [data.candi[i][0], "-", 0, 0, 0]
+                        print("Candi telah berhasil dihancurkan.")
+                        break
+                    elif val == "N" or val == "n":
+                        print("Candi tidak jadi dihancurkan.")
+                        break
+                    else:
+                        loop = True
+                break
+        else:
+            print("Tidak ada candi dengan ID tersebut.")
 
 # # F12 Ayam berkokok
-# def ayamberkokok() :
-#     print ('Kukuruyuk.. Kukuruyuk..')
-#     if jumlahcandi == 100 :
-#         print (f'Jumlah Candi: {jumlahcandi}')
-#         print ('Yah, Bandung Bondowoso memenangkan permainan!')
-#     else :
-#         print (f'Jumlah Candi : {jumlahcandi}')
-#         print ('''Selamat, Roro Jonggrang memenangkan permainan!.
-#
-# Bandung Bondowoso angry noise.
-# Roro Jonggrang dikutuk menjadi candi.''')
-# (ayamberkokok())
+def ayamberkokok() :
+    print('Kukuruyuk.. Kukuruyuk..')
+    if sumcandi() >= 100:
+        print(f'Jumlah Candi: {sumcandi()}')
+        print('Yah, Bandung Bondowoso memenangkan permainan!')
+    else:
+        print(f'Jumlah Candi: {sumcandi()}')
+        print('''Selamat, Roro Jonggrang memenangkan permainan!.
+
+Bandung Bondowoso angry noise.
+Roro Jonggrang dikutuk menjadi candi.''')
+    sys.exit()
 
 
 def save():
@@ -399,65 +435,51 @@ def save():
 # F15 HELP
 def help() :
     if data.roleIn == 'bandung_bondowoso' :
-        print ('=========== HELP ===========')
-        print (''' 1. logout
-    Untuk keluar dari akun yang digunakan sekarang''')
-        print (''' 2. summonjin
-    Untuk memanggil jin''')
-        print (''' 3. Hilangkan Jin
-    Untuk menghapus jin dan candi yang telah dibangun oleh jin yang di hapus''')
-        print (''' 4. Ubah Tipe Jin
-    Untuk mengubah tipe jin pengumpul menjadi jin pembangun atau sebaliknya''')
-        print (''' 5. Batch Kumpul/Bangun
-    Untuk mengerahkan semua jin sesuai tipenya untuk melakukan tugasnya masing-masing''')
-        print (''' 6. Ambil Laporan Jin
-    Untuk mengambil laporan jin untuk mengetahui kinerja dari para jin''')
-        print (''' 7. Ambil Laporan Candi
-    Untuk mengambil laporan candi untuk mengetahui progress pembangunan candi ''')
+        print('=========== HELP ===========')
+        print(''' 1. logout
+Untuk keluar dari akun yang digunakan sekarang''')
+        print(''' 2. summonjin
+Untuk memanggil jin''')
+        print(''' 3. hapusjin
+Untuk menghapus jin dan candi yang telah dibangun oleh jin yang di hapus''')
+        print(''' 4. ubahjin
+Untuk mengubah tipe jin pengumpul menjadi jin pembangun atau sebaliknya''')
+        print(''' 5. batchkumpul / batchbangun
+Untuk mengerahkan semua jin sesuai tipenya untuk melakukan tugasnya masing-masing''')
+        print(''' 6. laporanjin
+Untuk mengambil laporan jin untuk mengetahui kinerja dari para jin''')
+        print(''' 7. laporancandi
+Untuk mengambil laporan candi untuk mengetahui progress pembangunan candi ''')
         
     elif data.roleIn == 'roro_jonggrang' :
-        print ('=========== HELP ===========')
-        print (''' 1. logout
-    Untuk keluar dari akun yang digunakan sekarang''')
-        print (''' 2. Hancurkan Candi
-    Untuk menghancurkan candi agar menggagalkan rencana Bandung Bondowoso dan data candi terhapus''')
-        print (''' 3. Ayam Berkokok
-    Untuk menyelesaikan permainan dengan memalsukan pagi hari''')
+        print('=========== HELP ===========')
+        print(''' 1. logout
+Untuk keluar dari akun yang digunakan sekarang''')
+        print(''' 2. hancurkancandi
+Untuk menghancurkan candi agar menggagalkan rencana Bandung Bondowoso dan data candi terhapus''')
+        print(''' 3. ayamberkokok
+Untuk menyelesaikan permainan dengan memalsukan pagi hari''')
 
     elif data.roleIn == 'Pembangun':
-        print ('=========== HELP ===========')
-        print (''' 1. logout
-    Untuk keluar dari akun yang digunakan sekarang''')
-        print (''' 2. Jin Pembangun
-    Untuk membangun candi dengan jumlah bahan yang tersedia jika jumlahnya mencukupi''')
+        print('=========== HELP ===========')
+        print(''' 1. logout
+Untuk keluar dari akun yang digunakan sekarang''')
+        print(''' 2. bangun
+Untuk membangun candi dengan jumlah bahan yang tersedia jika jumlahnya mencukupi''')
+
     elif data.roleIn == 'Pengumpul':
-        print ('=========== HELP ===========')
-        print (''' 1. logout
-    Untuk keluar dari akun yang digunakan sekarang''')
-        print (''' 2. Jin Pengumpul
-    Untuk mengumpulkan bahan untuk membangun candi berupa pasir,batu dan air''')
-    elif data.roleIn == ' ' :
-        print ('=========== HELP ===========')
-        print ('''1. login
-   Untuk masuk menggunakan akun''')
-        print ('''2. exit
-   Untuk keluar dari program dan kembali ke terminal''')
+        print('=========== HELP ===========')
+        print(''' 1. logout
+Untuk keluar dari akun yang digunakan sekarang''')
+        print(''' 2. kumpul
+Untuk mengumpulkan bahan untuk membangun candi berupa pasir,batu dan air''')
 
-
-
-
-#F16 EXIT
-# def exit () :
-#     pilihan = ("Apakah Anda mau melakukan penyimpanan file yang sudah diubah? ")
-#     if pilihan == "n" or pilihan == "N" :
-#         run = False
-#     elif pilihan == "Y" or pilihan == "y" :
-#         save()
-#         run = False
-#     else :
-#         while pilihan != "n" or pilihan != "N" or pilihan != "y" or pilihan != "Y" :
-#             input ("Apakah Anda mau melakukan penyimpanan file yang sudah diubah? ")
-
+    elif data.roleIn == '':
+        print('=========== HELP ===========')
+        print('''1. login
+Untuk masuk menggunakan akun''')
+        print('''2. exit
+Untuk keluar dari program dan kembali ke terminal''')
 
 
 
