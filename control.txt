@@ -5,13 +5,13 @@ F02 - Logout .
 F03 - Summon Jin 8 .
 F04 - Hilangkan Jin 8 .
 F05 - Ubah Tipe Jin 9 .
-F06 - Jin Pembangun 9 ;
-F07 - Jin Pengumpul 10 ;
-F08 - Batch Kumpul/Bangun 10 ;
+F06 - Jin Pembangun 9 .
+F07 - Jin Pengumpul 10 .
+F08 - Batch Kumpul/Bangun 10 .
 F09 - Ambil Laporan Jin 12 -
-F10 - Ambil Laporan Candi 14 -
-F11 - Hancurkan Candi 14 ;
-F12 - Ayam Berkokok 15 ;
+F10 - Ambil Laporan Candi 14 .
+F11 - Hancurkan Candi 14 .
+F12 - Ayam Berkokok 15 .
 F13 - Load 16 .
 F14 - Save 16 .
 F15 - Help 17 .

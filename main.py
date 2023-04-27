@@ -24,10 +24,8 @@ def filepath(arg, filename):
     file = os.path.join(arg, filename)
     return file
 
+
 #F014 SAVE FUNCTION
-
-
-
 print("Selamat datang di program \"Manajerial Candi\"")
 print("Silahkan masukkan username Anda")
 
