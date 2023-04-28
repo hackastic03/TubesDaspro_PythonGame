@@ -69,6 +69,8 @@ def run(command):
         batchkumpul()
     elif command == "batchbangun":
         batchbangun()
+    elif command == "laporanjin":
+        laporanjin()
     elif command == "laporancandi":
         laporancandi()
     elif command == "hancurkancandi":
@@ -375,6 +377,7 @@ def batchkumpul():
             print(f"Mengerahkan {s} jin untuk mengumpulkan bahan.")
             print(f"Jin menemukan total {data.totalBahan[0]} pasir, {data.totalBahan[1]} batu, dan {data.totalBahan[2]} air.")
 
+
 def batchbangun():
     if data.userIn == "Bondowoso":
         data.totalBahan = [0, 0, 0]
@@ -410,6 +413,71 @@ def sumcandi():
         if data.candi[i][1] != "-" and data.candi[i][1] != "":
             s += 1
     return s
+
+
+def laporanjin():
+    if data.roleIn == "bandung_bondowoso":
+        ban = 0
+        kum = 0
+        for i in range(data.elemUser[1]):
+            if data.user[i][2] == "Pembangun":
+                ban += 1
+            elif data.user[i][2] == "Pengumpul":
+                kum += 1
+        print("Total jin:", ban + kum)
+        print("Total jin pengumpul:", kum)
+        print("Total jin pembangun:", ban)
+
+        if data.elemCandi[1] > 1:
+            #MAX
+            jinmaks = data.candi[1][1]
+            countmax = 0
+
+            for i in range(1, data.elemCandi[1]):
+                count = 0
+                if data.candi[i][1] != '-':
+                    for j in range(1, data.elemCandi[1]):
+                        if data.candi[i][1] == data.candi[j][1] and data.candi[i][1] != '-':
+                            count += 1
+                    if count > countmax or (count == countmax and data.candi[i][1] > jinmaks):
+                        jinmaks = data.candi[i][1]
+                        countmax = count
+
+            #MIN
+            check = True
+
+
+
+            jinmin = data.candi[1][1]
+            countmin = data.elemCandi[1]
+
+            for i in range(1, data.elemCandi[1]):
+                count = 0
+                if data.candi[i][1] != '-':
+                    for j in range(1, data.elemCandi[1]):
+                        if data.candi[i][1] == data.candi[j][1] and data.candi[i][1] != '-':
+                            count += 1
+                    if count < countmin or (count == countmin and data.candi[i][1] > jinmin):
+                        jinmin = data.candi[i][1]
+                        countmin = count
+        else:
+            jinmaks = "-"
+            jinmin = "-"
+
+        print("Jin Terajin:", jinmaks)
+        print("Jin Termalas:", jinmin)
+
+
+        bah = [0, 0, 0]
+        for i in range(1, data.elemBahan[1]):
+            bah = [bah[j] + int(toArray(data.bahan[i][2])[j]) for j in range(3)]
+        print("Jumlah pasir:", bah[0])
+        print("Jumlah batu:", bah[1])
+        print("Jumlah air:", bah[2])
+
+    else:
+        print("Anda tidak punya akses")
+
 
 def test():
     s = [0, 0, 0]
