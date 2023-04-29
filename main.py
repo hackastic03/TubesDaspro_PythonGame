@@ -35,8 +35,7 @@ data.candi = parse.fromCSV(open(filepath(args.folder, "candi.csv"), "r"))
 data.elemUser = parse.nElem(open(filepath(args.folder, "user.csv"), "r"))
 data.elemBahan = parse.nElem(open(filepath(args.folder, "bahan_bangunan.csv"), "r"))
 data.elemCandi = parse.nElem(open(filepath(args.folder, "candi.csv"), "r"))
-data.elemlstMax = parse.nElem(data.lstMax)
-data.elemlstMin = parse.nElem(data.lstMin)
+
 
 while True:
     command = input(">>> ")
