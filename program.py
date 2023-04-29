@@ -251,7 +251,7 @@ def ubahjin():
                 if data.user[i][2] == "Pembangun":
                     while True:
                         checkYesNo = input(
-                            "Jin ini bertipe \"Pembangun\". Yakin ingin mengubah ke tipe \"Pengumpul\" (Y/N)? ")
+                            "Jin ini bertipe \"Pembangun\". Yakin ingin mengubah ke tipe \"Pengumpul\" (Y/N)? " )
                         if checkYesNo == "Y" or checkYesNo == "y":
                             print("Jin berhasil diubah")
                             data.user[i][2] = "Pengumpul"
@@ -265,7 +265,7 @@ def ubahjin():
                 if data.user[i][2] == "Pengumpul":
                     while True:
                         checkYesNo = input(
-                            "Jin ini bertipe \"Pengumpul\". Yakin ingin mengubah ke tipe \"Pembangun\" (Y/N)?")
+                            "Jin ini bertipe \"Pengumpul\". Yakin ingin mengubah ke tipe \"Pembangun\" (Y/N)? ")
                         if checkYesNo == "Y" or checkYesNo == "y":
                             print("Jin telah berhasil diubah")
                             data.user[i][2] = "Pembangun"
@@ -520,7 +520,7 @@ def laporancandi():
             s = biaya(1)
             ind = 1
             for i in range(1, data.elemCandi[1]):
-                if biaya(i) < s:
+                if biaya(i) < s and data.candi[i][1] != "-" :
                     print(f"biaya({i}) = {biaya(i)}")
                     s = biaya(i)
                     ind = i
@@ -537,7 +537,7 @@ def hancurkancandi():
     if data.roleIn == "roro_jonggrang":
         index = int(input("Masukkan id candi: "))
         for i in range(data.elemCandi[1]):
-            if index == data.candi[i][0]:
+            if str(index) == data.candi[i][0]:
                 loop = True
                 while loop:
                     val = input(f"Apakah anda yakin ingin menghancurkan candi ID: {index} (Y/N)? ")
@@ -568,7 +568,7 @@ def ayamberkokok():
             print(f'Jumlah Candi: {sumcandi()}')
             print('''Selamat, Roro Jonggrang memenangkan permainan!.
     
-Bandung Bondowoso angry noise.
+*Bandung Bondowoso angry noise*
 Roro Jonggrang dikutuk menjadi candi.''')
         sys.exit()
     else:
