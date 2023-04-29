@@ -352,9 +352,11 @@ def banguncandi(batch):
 
             if data.elemBahan[1] <= 101:
                 for i in range(data.elemCandi[1]):
-                    if data.candi[1] == "-":
+                    if data.candi[i][1] == "-":
                         data.candi[i] = [i, data.userIn, material_required0[0], material_required0[1], material_required0[2]]
                         break
+                    else:
+                        continue
                 else:
                     data.candi = app(data.candi, data.elemCandi[1], [data.elemCandi[1], data.userIn, material_required0[0], material_required0[1], material_required0[2]])[0]
                     data.elemCandi = (data.elemCandi[0], data.elemCandi[1] + 1)
