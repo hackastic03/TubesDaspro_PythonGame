@@ -463,7 +463,7 @@ def laporanjin():
                     for j in range(1, data.elemCandi[1]):
                         if data.candi[i][1] == data.candi[j][1] and data.candi[i][1] != '-':
                             count += 1
-                    if count > countmax or (count == countmax and data.candi[i][1] <     jinmaks):
+                    if count > countmax or (count == countmax and data.candi[i][1] < jinmaks):
                         jinmaks = data.candi[i][1]
                         countmax = count
 
@@ -478,7 +478,7 @@ def laporanjin():
                     for j in range(1, data.elemCandi[1]):
                         if data.candi[i][1] == data.candi[j][1] and data.candi[i][1] != '-':
                             count += 1
-                    if count < countmin or (count == countmin and data.candi[i][1] > jinmin):
+                    if count < countmin or (count == countmin and data.candi[i][1] > jinmin) and data.candi[i][1] != '-':
                         jinmin = data.candi[i][1]
                         countmin = count
         else:
@@ -514,16 +514,14 @@ def laporancandi():
             s = biaya(1)
             ind = 1
             for i in range(1, data.elemCandi[1]):
-                if biaya(i) > s:
-                    print(f"biaya({i}) = {biaya(i)}")
+                if biaya(i) > s and data.candi[i][1] != "-":
                     s = biaya(i)
                     ind = i
             print("ID Candi Termahal:", ind, f"Rp {s}")
             s = biaya(1)
             ind = 1
             for i in range(1, data.elemCandi[1]):
-                if biaya(i) < s:
-                    print(f"biaya({i}) = {biaya(i)}")
+                if biaya(i) < s and data.candi[i][1] != "-":
                     s = biaya(i)
                     ind = i
             print("ID Candi Termurah:", ind, f"Rp {s}")
@@ -538,8 +536,8 @@ def laporancandi():
 def hancurkancandi():
     if data.roleIn == "roro_jonggrang":
         index = int(input("Masukkan id candi: "))
-        for i in range(data.elemCandi[1]):
-            if index == data.candi[i][0]:
+        for i in range(1, data.elemCandi[1]):
+            if index == int(data.candi[i][0]) and data.candi[i][1] != "-":
                 loop = True
                 while loop:
                     val = input(f"Apakah anda yakin ingin menghancurkan candi ID: {index} (Y/N)? ")
