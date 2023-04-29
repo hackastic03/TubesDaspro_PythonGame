@@ -5,22 +5,21 @@ from random import randint
 import sys
 
 
-def toArray(line):
-    arr = []
-    num_str = ""
-    for char in range(len(line)):
-        if line[char] == "," or line[char] == "]" or line[char] == " ":
-            if num_str:
-                arr += [int(num_str),]
-                num_str = ""
-        elif line[char] == "[":
-            continue
-        else:
-            num_str += line[char]
-    if num_str:
-        arr += [int(num_str),]
-    return arr
-
+# def toArray(line):
+#     arr = []
+#     num_str = ""
+#     for char in range(len(line)):
+#         if line[char] == "," or line[char] == "]" or line[char] == " ":
+#             if num_str:
+#                 arr += [int(num_str)]
+#                 num_str = ""
+#         elif line[char] == "[":
+#             continue
+#         else:
+#             num_str += line[char]
+#     if num_str:
+#         arr += [int(num_str)]
+#     return arr
 
 def app(arr, length, x):
     # line = 0
@@ -34,11 +33,25 @@ def app(arr, length, x):
     return arr2, length
 
 
-def countSum(arr, length):
-    jumlah = 0
-    for i in range(length):
-        jumlah += arr[i]
-    return jumlah
+def toArray(line):
+    arr = []
+    lenarr = 0
+    num_str = ""
+    for char in range(len(line)):
+        if line[char] == "," or line[char] == "]" or line[char] == " ":
+            if num_str:
+                arr = app(arr, lenarr, int(num_str))[0]
+                lenarr += 1
+                num_str = ""
+        elif line[char] == "[":
+            continue
+        else:
+            num_str += line[char]
+    if num_str:
+        arr = app(arr, lenarr, int(num_str))[0]
+        lenarr += 1
+    return arr
+
 
 def superadmin():
     print(data.user)
@@ -83,8 +96,8 @@ def run(command):
         save()
     elif command == "help":
         help()
-    elif command == "test":
-        test()
+    else:
+        print("Command tidak ditemukan!")
 
 
 #F01
@@ -224,52 +237,57 @@ def hapusjin():
             else:
                 print("Tidak ada jin dengan username tersebut.")
                 break
+    else:
+        print("Anda tidak bisa menghapus jin!")
 
 
 #F05 Ubah Jin
 def ubahjin():
-    kondisi = True
-    daftarUserJin = input("Masukkan username jin: ")
-    for i in range(1, data.elemUser[1]):
-        if daftarUserJin == data.user[i][0]:
-            if data.user[i][2] == "Pembangun":
-                while True:
-                    checkYesNo = input(
-                        "Jin ini bertipe \"Pembangun\". Yakin ingin mengubah ke tipe \"Pengumpul\" (Y/N)? ")
-                    if checkYesNo == "Y" or checkYesNo == "y":
-                        print("Jin berhasil diubah")
-                        data.user[i][2] = "Pengumpul"
-                        break
-                    elif checkYesNo == "N" or checkYesNo == "n":
-                        print("Jin tidak jadi diubah")
-                        break
-                    else:
-                        print("Silahkan pilih Y atau N")
-                break
-            if data.user[i][2] == "Pengumpul":
-                while True:
-                    checkYesNo = input(
-                        "Jin ini bertipe \"Pengumpul\". Yakin ingin mengubah ke tipe \"Pembangun\" (Y/N)?")
-                    if checkYesNo == "Y" or checkYesNo == "y":
-                        print("Jin telah berhasil diubah")
-                        data.user[i][2] = "Pembangun"
-                        break
-                    elif checkYesNo == "N" or checkYesNo == "n":
-                        print("Jin tidak jadi diubah")
-                        break
-                    else:
-                        print("Silahkan pilih Y atau N")
+    if data.roleIn == "bandung_bondowoso":
+        kondisi = True
+        daftarUserJin = input("Masukkan username jin: ")
+        for i in range(1, data.elemUser[1]):
+            if daftarUserJin == data.user[i][0]:
+                if data.user[i][2] == "Pembangun":
+                    while True:
+                        checkYesNo = input(
+                            "Jin ini bertipe \"Pembangun\". Yakin ingin mengubah ke tipe \"Pengumpul\" (Y/N)? ")
+                        if checkYesNo == "Y" or checkYesNo == "y":
+                            print("Jin berhasil diubah")
+                            data.user[i][2] = "Pengumpul"
+                            break
+                        elif checkYesNo == "N" or checkYesNo == "n":
+                            print("Jin tidak jadi diubah")
+                            break
+                        else:
+                            print("Silahkan pilih Y atau N")
                     break
-    for j in range(1, data.elemUser[1]):
-        if daftarUserJin == data.user[j][0]:
-            kondisi = True
-            break
-        else:
-            kondisi = False
+                if data.user[i][2] == "Pengumpul":
+                    while True:
+                        checkYesNo = input(
+                            "Jin ini bertipe \"Pengumpul\". Yakin ingin mengubah ke tipe \"Pembangun\" (Y/N)?")
+                        if checkYesNo == "Y" or checkYesNo == "y":
+                            print("Jin telah berhasil diubah")
+                            data.user[i][2] = "Pembangun"
+                            break
+                        elif checkYesNo == "N" or checkYesNo == "n":
+                            print("Jin tidak jadi diubah")
+                            break
+                        else:
+                            print("Silahkan pilih Y atau N")
+                        break
+        for j in range(1, data.elemUser[1]):
+            if daftarUserJin == data.user[j][0]:
+                kondisi = True
+                break
+            else:
+                kondisi = False
 
-    while kondisi == False:
-        print("Tidak ada jin dengan username tersebut")
-        break
+        while not kondisi:
+            print("Tidak ada jin dengan username tersebut")
+            break
+    else:
+        print("Anda tidak bisa mengubah tipe jin!")
 
 
 # F07 Jin pengumpul
@@ -294,7 +312,7 @@ def jumlahbahan(batch):
         print("Anda tidak punya akses!")
 
 
-#F07
+#F06 Jin Pembangun
 def banguncandi(batch):
     if data.roleIn == "Pembangun":
         found = False
@@ -350,11 +368,11 @@ def banguncandi(batch):
             else:
                 data.totalBangun += 1
                 data.totalBahan = [data.totalBahan[0] + material_required0[0], data.totalBahan[1] + material_required0[1], data.totalBahan[2] + material_required0[2]]
-
-
         else:
             print("""Bahan bangunan tidak mencukupi.
-    Candi tidak bisa dibangun!""")
+Candi tidak bisa dibangun!""")
+    else:
+        print("Anda tidak punya akses!")
 
 
 #F08
@@ -376,8 +394,11 @@ def batchkumpul():
         else:
             print(f"Mengerahkan {s} jin untuk mengumpulkan bahan.")
             print(f"Jin menemukan total {data.totalBahan[0]} pasir, {data.totalBahan[1]} batu, dan {data.totalBahan[2]} air.")
+    else:
+        print("Anda tidak punya akses!")
 
 
+#F08
 def batchbangun():
     if data.userIn == "Bondowoso":
         data.totalBahan = [0, 0, 0]
@@ -400,6 +421,7 @@ def batchbangun():
         print("Anda tidak punya akses")
 
 
+#F09 Laporan Jin
 def sumbahan():
     sbahan = [0, 0, 0]
     for i in range(1, data.elemCandi[1]):
@@ -439,15 +461,12 @@ def laporanjin():
                     for j in range(1, data.elemCandi[1]):
                         if data.candi[i][1] == data.candi[j][1] and data.candi[i][1] != '-':
                             count += 1
-                    if count > countmax or (count == countmax and data.candi[i][1] > jinmaks):
+                    if count > countmax or (count == countmax and data.candi[i][1] <     jinmaks):
                         jinmaks = data.candi[i][1]
                         countmax = count
 
             #MIN
             check = True
-
-
-
             jinmin = data.candi[1][1]
             countmin = data.elemCandi[1]
 
@@ -467,7 +486,6 @@ def laporanjin():
         print("Jin Terajin:", jinmaks)
         print("Jin Termalas:", jinmin)
 
-
         bah = [0, 0, 0]
         for i in range(1, data.elemBahan[1]):
             bah = [bah[j] + int(toArray(data.bahan[i][2])[j]) for j in range(3)]
@@ -476,14 +494,7 @@ def laporanjin():
         print("Jumlah air:", bah[2])
 
     else:
-        print("Anda tidak punya akses")
-
-
-def test():
-    s = [0, 0, 0]
-    for i in range(1, data.elemCandi[1]):
-        s = [s[j - 2] + int(data.candi[i][j]) for j in range(2, 5)]
-    print(s)
+        print("Laporan jin hanya dapat diakses oleh akun Bandung Bondowoso.")
 
 
 #F10
@@ -505,7 +516,7 @@ def laporancandi():
                     print(f"biaya({i}) = {biaya(i)}")
                     s = biaya(i)
                     ind = i
-            print("ID Candi Termahal:", ind, s)
+            print("ID Candi Termahal:", ind, f"Rp {s}")
             s = biaya(1)
             ind = 1
             for i in range(1, data.elemCandi[1]):
@@ -513,7 +524,7 @@ def laporancandi():
                     print(f"biaya({i}) = {biaya(i)}")
                     s = biaya(i)
                     ind = i
-            print("ID Candi Termurah:", ind, s)
+            print("ID Candi Termurah:", ind, f"Rp {s}")
         else:
             print('ID Candi Termahal: -')
             print('ID Candi Termurah: -')
@@ -542,9 +553,11 @@ def hancurkancandi():
                 break
         else:
             print("Tidak ada candi dengan ID tersebut.")
+    else:
+        print("Anda tidak bisa menghancurkan candi!")
 
 
-# # F12 Ayam berkokok
+# F12 Ayam berkokok
 def ayamberkokok():
     if data.roleIn == "roro_jonggrang":
         print('Kukuruyuk.. Kukuruyuk..')
@@ -562,6 +575,7 @@ Roro Jonggrang dikutuk menjadi candi.''')
         print("Kamu gapunya akses!")
 
 
+#F14
 def save():
     savefolder = input("Masukkan nama folder: ")
     if os.path.exists(savefolder):
@@ -577,9 +591,8 @@ def save():
     print(f"Berhasil menyimpan data di folder {savefolder}!")
 
 
-
 # F15 HELP
-def help() :
+def help():
     if data.roleIn == 'bandung_bondowoso':
         print('=========== HELP ===========')
         print(''' 1. logout
