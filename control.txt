@@ -1,0 +1,28 @@
+CHECKING
+
+F01 - Login .
+F02 - Logout .
+F03 - Summon Jin 8 .
+F04 - Hilangkan Jin 8 .
+F05 - Ubah Tipe Jin 9 .
+F06 - Jin Pembangun 9 .
+F07 - Jin Pengumpul 10 .
+F08 - Batch Kumpul/Bangun 10 .
+F09 - Ambil Laporan Jin 12 -
+F10 - Ambil Laporan Candi 14 .
+F11 - Hancurkan Candi 14 .
+F12 - Ayam Berkokok 15 .
+F13 - Load 16 .
+F14 - Save 16 .
+F15 - Help 17 .
+F16 - Exit 19 .
+Spesifikasi Bonus 20
+B01 - Random Number Generator 20
+B02 - Rekursif 20
+B03 - Typing 21
+B04 - Undo 21
+B?? - Kreativitas 21
+Struktur Data File Eksternal 22
+File User (user.csv) 22
+File Candi (candi.csv) 22
+File Bahan Bangunan (bahan_bangunan.csv) 23

@@ -9,7 +9,7 @@ import sys
 #F013 LOAD FUNCTION
 
 parser = argparse.ArgumentParser(description='Buka folder.')
-parser.add_argument('folder', nargs='?', default=None, help='Spesifikasikan folder csv berlokasi')
+parser.add_argument('folder', nargs='?', default=None, help='Spesifikasikan folder csv berlokasi!')
 args = parser.parse_args()
 
 if args.folder is None:
@@ -24,10 +24,8 @@ def filepath(arg, filename):
     file = os.path.join(arg, filename)
     return file
 
+
 #F014 SAVE FUNCTION
-
-
-
 print("Selamat datang di program \"Manajerial Candi\"")
 print("Silahkan masukkan username Anda")
 
