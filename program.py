@@ -3,6 +3,7 @@ import parser as parse
 import os
 import sys
 import datetime
+import time
 
 
 # def toArray(line):
@@ -67,7 +68,8 @@ def randomize(seed):
     #Inisialisasi data sesuai algoritma
     a = 123456789
     c = 13579
-    m = 2468 ** 2
+    time.sleep((int(datetime.datetime.now().timestamp()) % int(datetime.datetime.now().strftime('%H%M%S%f'))) % 0.3)
+    m = int(datetime.datetime.now().strftime('%Y%m%d%H%M%S%f'))
     random_int = (a * seed + c) % m
     return random_int % 6
 
@@ -318,8 +320,8 @@ def ubahjin():
 def jumlahbahan(batch):
     if data.roleIn == "Pengumpul":
         pasir = randomize(int(datetime.datetime.now().strftime('%Y%m%d%H%M%S%f')))
-        batu = randomize(int(datetime.datetime.now().strftime('%Y%m%d%H%M%S%f')) - int(datetime.datetime.now().strftime('%Y%m%d%H%M%S')) * 5)
-        air = randomize(int(datetime.datetime.now().strftime('%Y%m%d%H%M%S%f')) + int(datetime.datetime.now().strftime('%Y%m%d%H%M%S')))
+        batu = randomize(int(datetime.datetime.now().strftime('%Y%m%d%H%M%S%f')) - int(datetime.datetime.now().timestamp()) * 5)
+        air = randomize(int(datetime.datetime.now().timestamp()) + int(datetime.datetime.now().strftime('%Y%m%d%H%M%S')))
         for i in range(data.elemBahan[1]):
             if data.userIn == data.bahan[i][0]:
                 bahanAda = toArray(data.bahan[i][2])
@@ -431,20 +433,46 @@ def batchbangun():
     if data.userIn == "Bondowoso":
         data.totalBahan = [0, 0, 0]
         data.totalBangun = 0
+        material_required = [0, 0, 0]
         s = 0
         for i in range(1, data.elemUser[1]):
             if data.user[i][2] == "Pembangun":
+                material_required = [material_required[0] + randomize(int(datetime.datetime.now().strftime('%Y%m%d%H%M%S%f'))),
+                                     material_required[1] + randomize(int(datetime.datetime.now().strftime('%Y%m%d%H%M%S%f')) - int(datetime.datetime.now().timestamp()) * 3),
+                                     material_required[2] + randomize(int(datetime.datetime.now().timestamp()) + int(datetime.datetime.now().strftime('%Y%m%d%H%M%S')))]
                 s += 1
-                data.roleIn = data.user[i][2]
-                data.userIn = data.user[i][0]
-                banguncandi(True)
-        data.roleIn = "bandung_bondowoso"
-        data.userIn = "Bondowoso"
+
         if s == 0:
             print("Bangun gagal. Anda tidak punya jin pembangun. Silahkan summon terlebih dahulu.")
+
         else:
-            print(f"Mengerahkan {s} jin untuk membangun candi dengan total bahan {data.totalBahan[0]} pasir, {data.totalBahan[1]} batu, dan {data.totalBahan[2]} air.")
-            print(f"Jin berhasil membangun total {data.totalBangun} candi.")
+            for i in range(1, data.elemBahan[1]):
+                data.totalBahan = [data.totalBahan[j] + int(toArray(data.bahan[i][2])[j]) for j in range(3)]
+
+            enough_mat = True
+            kurang = [0, 0, 0]
+            for i in range(3):
+                if data.totalBahan[i] < material_required[i]:
+                    enough_mat = False
+                    kurang[i] = material_required[i] - data.totalBahan[i]
+
+            if enough_mat:
+                s = 0
+                data.totalBahan = [0, 0, 0]
+                for i in range(1, data.elemUser[1]):
+                    if data.user[i][2] == "Pembangun":
+                        s += 1
+                        data.roleIn = data.user[i][2]
+                        data.userIn = data.user[i][0]
+                        banguncandi(True)
+                data.roleIn = "bandung_bondowoso"
+                data.userIn = "Bondowoso"
+
+                print(f"Mengerahkan {s} jin untuk membangun candi dengan total bahan {material_required[0]} pasir, {material_required[1]} batu, dan {material_required[2]} air.")
+                print(f"Jin berhasil membangun total {data.totalBangun} candi.")
+            else:
+                print(f"Mengerahkan {s} jin untuk membangun candi dengan total bahan {material_required[0]} pasir, {material_required[1]} batu, dan {material_required[2]} air.")
+                print(f"Bangun gagal. Kurang {kurang[0]} pasir, {kurang[1]} batu, {kurang[2]} air.")
     else:
         print("Anda tidak punya akses")
 
@@ -467,16 +495,20 @@ def sumcandi():
 
 def laporanjin():
     if data.roleIn == "bandung_bondowoso":
-        ban = 0
-        kum = 0
-        for i in range(data.elemUser[1]):
-            if data.user[i][2] == "Pembangun":
+        def count_roles(data, index=0, ban=0, kum=0):
+            if index >= data.elemUser[1]:
+                return ban, kum
+
+            if data.user[index][2] == "Pembangun":
                 ban += 1
-            elif data.user[i][2] == "Pengumpul":
+            elif data.user[index][2] == "Pengumpul":
                 kum += 1
-        print("Total jin:", ban + kum)
-        print("Total jin pengumpul:", kum)
-        print("Total jin pembangun:", ban)
+
+            return count_roles(data, index + 1, ban, kum)
+
+        print("Total jin:", count_roles(data)[0] + count_roles(data)[1])
+        print("Total jin pengumpul:", count_roles(data)[1])
+        print("Total jin pembangun:", count_roles(data)[0])
 
         if data.elemCandi[1] > 1:
             #MAX
@@ -544,13 +576,13 @@ def laporancandi():
                     s = biaya(i)
                     ind = i
             print("ID Candi Termahal:", ind, f"Rp {s}")
-            s = biaya(1)
-            ind = 1
+            s1 = biaya(1)
+            index = 1
             for i in range(1, data.elemCandi[1]):
                 if biaya(i) < s and data.candi[i][1] != "-":
-                    s = biaya(i)
-                    ind = i
-            print("ID Candi Termurah:", ind, f"Rp {s}")
+                    s1 = biaya(i)
+                    index = i
+            print("ID Candi Termurah:", index, f"Rp {s1}")
         else:
             print('ID Candi Termahal: -')
             print('ID Candi Termurah: -')
