@@ -158,7 +158,7 @@ Anda belum login, silahkan login terlebih dahulu sebelum melakukan logout""")
         print("Logout berhasil!")
 
 
-def checkJin():
+def sumJin():
     n = 0
     for i in range(data.elemUser[1]):
         if data.user[i][0] != "-" and data.user[i][0]!= "":
@@ -169,7 +169,7 @@ def checkJin():
 #F03
 def summonjin():
     if data.roleIn == "bandung_bondowoso":
-        if checkJin() <= 103:
+        if sumJin() <= 103:
             rolejin = ""
             print(f"""Jenis jin yang dapat dipanggil:
 (1) Pengumpul - Bertugas mengumpulkan bahan bangunan
@@ -229,7 +229,7 @@ def summonjin():
 def hapusjin():
     if data.roleIn == "bandung_bondowoso":
         validasiUsernameJin = True
-        if validasiUsernameJin and checkJin() > 3:
+        if validasiUsernameJin and sumJin() > 3:
             deleteJin = input("Masukkan username jin : ")
             for i in range(1, data.elemUser[1]):
                 if deleteJin == data.user[i][0] and deleteJin != "Bondowoso" and deleteJin != "Roro":
@@ -266,7 +266,7 @@ def hapusjin():
 def ubahjin():
     if data.roleIn == "bandung_bondowoso":
         kondisi = True
-        if checkJin() > 3:
+        if sumJin() > 3:
             daftarUserJin = input("Masukkan username jin: ")
             for i in range(1, data.elemUser[1]):
                 if daftarUserJin == data.user[i][0]:
@@ -317,9 +317,9 @@ def ubahjin():
 # F07 Jin pengumpul
 def jumlahbahan(batch):
     if data.roleIn == "Pengumpul":
-        pasir = randomize(int(datetime.datetime.now().strftime("%Y%m%d%H%M%S")))
-        batu = randomize(int(datetime.datetime.now().strftime("%Y%m%d%H%M%S")))
-        air = randomize(int(datetime.datetime.now().strftime("%Y%m%d%H%M%S")))
+        pasir = randomize(int(datetime.datetime.now().strftime('%Y%m%d%H%M%S%f')))
+        batu = randomize(int(datetime.datetime.now().strftime('%Y%m%d%H%M%S%f')) - int(datetime.datetime.now().strftime('%Y%m%d%H%M%S')) * 5)
+        air = randomize(int(datetime.datetime.now().strftime('%Y%m%d%H%M%S%f')) + int(datetime.datetime.now().strftime('%Y%m%d%H%M%S')))
         for i in range(data.elemBahan[1]):
             if data.userIn == data.bahan[i][0]:
                 bahanAda = toArray(data.bahan[i][2])
@@ -340,7 +340,9 @@ def jumlahbahan(batch):
 def banguncandi(batch):
     if data.roleIn == "Pembangun":
         found = False
-        material_required = [randomize(int(datetime.datetime.now().strftime("%Y%m%d%H%M%S"))), randomize(int(datetime.datetime.now().strftime("%Y%m%d%H%M%S"))), randomize(int(datetime.datetime.now().strftime("%Y%m%d%H%M%S")))] #pasir, batu, air
+        material_required = [randomize(int(datetime.datetime.now().strftime('%Y%m%d%H%M%S%f'))),
+                             randomize(int(datetime.datetime.now().strftime('%Y%m%d%H%M%S%f')) - int(datetime.datetime.now().strftime('%Y%m%d%H%M%S')) * 3),
+                             randomize(int(datetime.datetime.now().strftime('%Y%m%d%H%M%S%f')) + int(datetime.datetime.now().strftime('%Y%m%d%H%M%S')))] #pasir, batu, air
         # print("material:", material_required)
         material_required0 = tuple(material_required)
         jumlahada = [0, 0, 0]
