@@ -495,7 +495,7 @@ def sumcandi(): # Fungsi untuk menghitung banyaknya candi yang sudah dibuat
 
 def laporanjin():
     if data.roleIn == "bandung_bondowoso":
-        def count_roles(data, index=0, ban=0, kum=0):
+        def count_roles(data, index=0, ban=0, kum=0): # Sama ini fungsi buat apa ya aa bagas
             if index >= data.elemUser[1]:
                 return ban, kum
 
